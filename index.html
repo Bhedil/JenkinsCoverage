@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id-ID">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sensor Management System</title>       
+
+    <!--   
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    -->
+    <!-- google font -->
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet" type="text/css" />
+
+    <link href="http://prasmul.qfactor.id/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">    
+    
+</head>
+<body style="overflow-x:hidden;">
+	<div class="wrapper">
+		<div class="col-3" style="margin-bottom:10px;">
+			<div class="card">
+				<div class="panel-heading" style="height: 28px">
+					<h3 class="panel-title"  style="text-align:center;font-size:12px">Temperature & Humidity</h3>
+				</div>
+				<div class="row" >
+					<div class="col-6 rounded" >
+						<span id="device_7_temperature">-</span><img src="http://prasmul.qfactor.id/assets/images/temperature.png" style="width:40%;margin-top:20px;"/>
+					</div>
+					<div class="col-6 rounded">
+						<span id="device_7_humidity">-</span><img src="http://prasmul.qfactor.id/assets/images/humidity.png" style="width:30%;margin-top:20px;"/>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
+
+<script>
+const APPLICATION_ID = "APP6392a41ad2bcc31620";
+const DEVICE_ID = "DEV6392b743bfc9337458";
+const wbs = new WebSocket('wss://wss-data.telkomiot.id/'+APPLICATION_ID+'/'+DEVICE_ID);
+wbs.onopen = function() {
+	console.log('WebSocket Client Connected');
+	document.getElementById('device_7_temperature').innerHTML='20';
+	document.getElementById('device_7_humidity').innerHTML='72';
+}
+
+wbs.onmessage = function (d) {
+			console.log(d);
+			let payload = d.data;
+			let data = [];
+			data[0] =  payload.substr(0,2);
+			data[1] =  payload.substr(2,2);
+			data[2] =  payload.substr(4,2);
+			data[3] =  payload.substr(6,2);
+			data[4] =  payload.substr(8,2);
+			data[5] =  payload.substr(10,2);
+			data[6] =  payload.substr(12,2);
+			data[7] =  payload.substr(14,2);
+            //dt = JSON.parse(JSON.parse(d.data));
+			if(data[0]=='01'){
+				battery = parseInt(data[3], 16);
+				temperature = parseInt(data[4]+data[5], 16);
+				humidity = parseInt(data[6]+data[7], 16);
+			
+				out = {battery: (battery/35)*100, temperature:temperature, humidity:humidity};
+				document.getElementById('device_7_temperature').innerHTML= temperature;
+				document.getElementById('device_7_humidity').innerHTML= humidity;
+			}
+            
+				 
+        }
+
+</script>
