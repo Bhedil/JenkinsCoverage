@@ -18,9 +18,9 @@
 <body style="overflow-x:hidden;">
 	<div class="wrapper">
 		<div class="col-3" style="margin-bottom:10px;">
-			<div class="card">
+			<div class="card" style="padding:10px;">
 				<div class="panel-heading" style="height: 28px">
-					<h3 class="panel-title"  style="text-align:center;font-size:12px">Temperature & Humidity</h3>
+					<h3 class="panel-title"  style="text-align:center;font-size:12px">Demo Temperature & Humidity</h3>
 				</div>
 				<div class="row" >
 					<div class="col-6 rounded" >
@@ -38,8 +38,8 @@
 </html>
 
 <script>
-const APPLICATION_ID = "APP6392a41ad2bcc31620";
-const DEVICE_ID = "DEV6392b743bfc9337458";
+const APPLICATION_ID = "APP653750e73bf2152784";
+const DEVICE_ID = "DEV6677cd8304e2c56327";
 const wbs = new WebSocket('wss://wss-data.telkomiot.id/'+APPLICATION_ID+'/'+DEVICE_ID);
 wbs.onopen = function() {
 	console.log('WebSocket Client Connected');
@@ -48,28 +48,12 @@ wbs.onopen = function() {
 }
 
 wbs.onmessage = function (d) {
-			console.log(d);
+			//console.log(d);
 			let payload = d.data;
-			let data = [];
-			data[0] =  payload.substr(0,2);
-			data[1] =  payload.substr(2,2);
-			data[2] =  payload.substr(4,2);
-			data[3] =  payload.substr(6,2);
-			data[4] =  payload.substr(8,2);
-			data[5] =  payload.substr(10,2);
-			data[6] =  payload.substr(12,2);
-			data[7] =  payload.substr(14,2);
-            //dt = JSON.parse(JSON.parse(d.data));
-			if(data[0]=='01'){
-				battery = parseInt(data[3], 16);
-				temperature = parseInt(data[4]+data[5], 16);
-				humidity = parseInt(data[6]+data[7], 16);
-			
-				out = {battery: (battery/35)*100, temperature:temperature, humidity:humidity};
-				document.getElementById('device_7_temperature').innerHTML= temperature;
-				document.getElementById('device_7_humidity').innerHTML= humidity;
-			}
-            
+			let data_json = JSON.parse(JSON.parse(payload));
+
+            document.getElementById('device_7_temperature').innerHTML= data_json.t;
+			document.getElementById('device_7_humidity').innerHTML= data_json.h;	 
 				 
         }
 
