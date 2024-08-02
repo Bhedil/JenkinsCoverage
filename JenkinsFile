@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODEJS_HOME = tool name: 'NodeJS' // Use the name you configured in Global Tool Configuration
+        NODEJS_HOME = tool name: 'nodejs' // Use the name you configured in Global Tool Configuration
         PATH = "${NODEJS_HOME}/bin:${env.PATH}"
         SONARQUBE_SCANNER_HOME = tool name: 'SonarQube Scanner' // Use the name you configured in Global Tool Configuration
         PATH = "${SONARQUBE_SCANNER_HOME}/bin:${env.PATH}"
@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://your-repo-url.git'
+                git 'https://github.com/Bhedil/JenkinsCoverage.git'
             }
         }
 
@@ -32,7 +32,7 @@ pipeline {
                 scannerHome = tool 'SonarQube Scanner'
             }
             steps {
-                withSonarQubeEnv('SonarQube') { // Use the name configured in Manage Jenkins -> Configure System
+                withSonarQubeEnv('TelkomIOT') { // Use the name configured in Manage Jenkins -> Configure System
                     sh 'sonar-scanner -Dsonar.projectKey=your_project_key -Dsonar.sources=. -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info'
                 }
             }
