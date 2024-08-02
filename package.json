@@ -1,0 +1,24 @@
+{
+  "name": "materiot_application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "coverage": "nyc npm test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chai": "^5.1.1",
+    "jsdom": "^24.1.1",
+    "mocha": "^10.7.0"
+  },
+  "devDependencies": {
+    "nyc": "^17.0.0"
+  }
+}
